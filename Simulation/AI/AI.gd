@@ -16,25 +16,25 @@ class NeuralNetwork:
 	var layers = []
 	
 	func vectorDotProduct(vector1, vector2):
-	var product = 0
-	
-	if vector1.size() != vector2.size():
-		print("ERROR: Vectors must have the same length for dot product calculation.")
+		var product = 0
 		
-		return []
+		if vector1.size() != vector2.size():
+			print("ERROR: Vectors must have the same length for dot product calculation.")
+			
+			return []
+		
+		for i in vector1.size():
+			product += vector1[i] * vector2[i]
+		
+		return product
 	
-	for i in vector1.size():
-		product += vector1[i] * vector2[i]
-	
-	return product
-
-func vectorAdd(vector1, vector2):
-	var addend = []
-	
-	for i in vector1.size():
-		addend.append(vector1[i] + vector2[i])
-	
-	return addend
+	func vectorAdd(vector1, vector2):
+		var addend = []
+		
+		for i in vector1.size():
+			addend.append(vector1[i] + vector2[i])
+		
+		return addend
 	
 	func _init():
 		layers.append([]) # Input
@@ -120,8 +120,6 @@ func _physics_process(delta):
 			input.append(1)
 	
 	var output = brain.Update(input)
-	
-	
 	
 	if not is_on_floor():
 		velocity.y += gravity * delta
