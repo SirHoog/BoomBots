@@ -1,9 +1,11 @@
-[gd_scene load_steps=36 format=3 uid="uid://bdy1t5u5fm8os"]
+[gd_scene load_steps=38 format=3 uid="uid://bdy1t5u5fm8os"]
 
 [ext_resource type="Script" path="res://Simulation/AI/AI.gd" id="1_7v50k"]
 [ext_resource type="Texture2D" uid="uid://b6bqckkvkr4de" path="res://Simulation/AI/Idle/Left.png" id="1_rvov7"]
+[ext_resource type="Script" path="res://Simulation/AI/Brain.gd" id="2_k8e6g"]
 [ext_resource type="Texture2D" uid="uid://bhlip3x2h3ggv" path="res://Simulation/AI/Idle/Right.png" id="2_lp5m0"]
 [ext_resource type="Texture2D" uid="uid://dlq3yawrmixwq" path="res://Simulation/AI/Move/Left.png" id="3_k0d71"]
+[ext_resource type="Script" path="res://Simulation/AI/Neuron.gd" id="3_v0du8"]
 [ext_resource type="Texture2D" uid="uid://0tehvmisv5c6" path="res://Simulation/AI/Move/Right.png" id="4_3rbon"]
 [ext_resource type="Texture2D" uid="uid://2u52peqsd52x" path="res://Simulation/AI/GrenadeLauncher/grenadeLauncherFrame1.png" id="5_247h2"]
 [ext_resource type="Texture2D" uid="uid://br52ixr4ooor5" path="res://Simulation/AI/GrenadeLauncher/grenadeLauncherFrame2.png" id="6_68er8"]
@@ -233,12 +235,12 @@ X direction
 Jump,
 Launch Grenade"
 script = ExtResource("1_7v50k")
-metadata/CollideWithOthers = true
-metadata/HiddenLayerSize = 3
-metadata/HiddenLayersAmount = 2
-metadata/OutputLayerSize = 0
-metadata/RaycastsAmount = 16
-metadata/RaycastDistance = 250.0
+
+[node name="Brain" type="Node" parent="."]
+script = ExtResource("2_k8e6g")
+
+[node name="Neuron" type="Node" parent="Brain"]
+script = ExtResource("3_v0du8")
 
 [node name="AI_Sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

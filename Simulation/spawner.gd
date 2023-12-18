@@ -1,10 +1,12 @@
 extends Node
 
+@export var PopulationSize : int = 5
+
 func _ready():
-	for i in get_meta("PopulationSize"):
-		var AI_PackedScene = preload("res://Simulation/AI/AI.tscn")
-		var AI = AI_PackedScene.instantiate()
-		var padding = 32 # Amount of pixels inside the map that it can't spawn in
+	for i in PopulationSize:
+		var AI_PackedScene : Resource = preload("res://Simulation/AI/AI.tscn")
+		var AI : Node = AI_PackedScene.instantiate()
+		var padding : int = 32 # Amount of pixels inside the map that it can't spawn in
 		
 		add_child(AI)
 		

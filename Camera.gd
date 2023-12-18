@@ -1,9 +1,9 @@
 extends Camera2D
 
-var mouseStartPos
-var screenStartPos
+var mouseStartPos : Vector2
+var screenStartPos : Vector2
 
-var dragging = false
+var dragging : bool = false
 
 func _input(event):
 	# Dragging
