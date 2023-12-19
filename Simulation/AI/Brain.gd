@@ -26,7 +26,7 @@ func vectorDotProduct(vector1, vector2):
 		product += vector1[i] * vector2[i]
 	
 	return product
-	
+
 func vectorAdd(vector1, vector2):
 	var addend : Array[float] = []
 	
@@ -36,7 +36,7 @@ func vectorAdd(vector1, vector2):
 	return addend
 
 var layers : Array[Array] = []
-	
+
 func _ready():
 	var raycasts : Node = get_node("../Raycasts")
 	
@@ -48,7 +48,8 @@ func _ready():
 			cos((i / RaycastsAmount) * PI * 2) * RaycastsDistance))
 		
 		raycasts.add_child(raycast)
-	
+
+func _init():
 	var inputLayer : Array[Neuron] = []
 	
 	for i in RaycastsAmount + 1:
@@ -90,7 +91,7 @@ func Update(input : Array[float]):
 	for i in RaycastsAmount:
 		layers.front()[i].activation = tanh(input[i]) # Normalize input
 	
-	biases.append(layers.front().back()) # Last neuron of input is the bias neuron
+	biases.append(layers.front().back().activation) # Last neuron of input is the bias neuron
 	
 	for i in range(1, layers.size()):
 		var previousLayer : Array[Neuron] = layers[i - 1]
