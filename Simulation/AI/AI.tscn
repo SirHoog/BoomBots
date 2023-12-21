@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bdy1t5u5fm8os"]
+[gd_scene load_steps=30 format=3 uid="uid://bdy1t5u5fm8os"]
 
 [ext_resource type="Script" path="res://Simulation/AI/AI.gd" id="1_7v50k"]
 [ext_resource type="Texture2D" uid="uid://b6bqckkvkr4de" path="res://Simulation/AI/Idle/Left.png" id="1_rvov7"]
@@ -7,9 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://dlq3yawrmixwq" path="res://Simulation/AI/Move/Left.png" id="3_k0d71"]
 [ext_resource type="Script" path="res://Simulation/AI/Neuron.gd" id="3_v0du8"]
 [ext_resource type="Texture2D" uid="uid://0tehvmisv5c6" path="res://Simulation/AI/Move/Right.png" id="4_3rbon"]
-[ext_resource type="Texture2D" uid="uid://2u52peqsd52x" path="res://Simulation/AI/GrenadeLauncher/grenadeLauncherFrame1.png" id="5_247h2"]
-[ext_resource type="Texture2D" uid="uid://br52ixr4ooor5" path="res://Simulation/AI/GrenadeLauncher/grenadeLauncherFrame2.png" id="6_68er8"]
-[ext_resource type="Texture2D" uid="uid://btpwe4ptwa7tw" path="res://Simulation/AI/GrenadeLauncher/grenadeLauncherFrame3.png" id="7_rwb13"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kqx3m"]
 atlas = ExtResource("1_rvov7")
@@ -179,65 +176,23 @@ custom_solver_bias = 0.5
 radius = 9.0
 height = 40.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fc445"]
-atlas = ExtResource("5_247h2")
-region = Rect2(0, 0, 20, 10)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uf6nr"]
-atlas = ExtResource("6_68er8")
-region = Rect2(0, 0, 20, 10)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4bcry"]
-atlas = ExtResource("7_rwb13")
-region = Rect2(0, 0, 20, 10)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_aexls"]
-atlas = ExtResource("5_247h2")
-region = Rect2(0, 0, 20, 10)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_qqck8"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fc445")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uf6nr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4bcry")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uf6nr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fc445")
-}],
-"loop": true,
-"name": &"active",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aexls")
-}],
-"loop": true,
-"name": &"inactive",
-"speed": 1.0
-}]
-
 [node name="AI" type="CharacterBody2D"]
 editor_description = "Input:
 Raycasts distance,
 Raycasts target type
 Output:
-X direction
+X direction,
 Jump,
-Launch Grenade"
+Launch Grenade,
+Aim direction"
 script = ExtResource("1_7v50k")
+CollideWithOthers = null
+WalkSpeed = null
+JumpPower = null
 
 [node name="Brain" type="Node" parent="."]
 script = ExtResource("2_k8e6g")
+OutputLayerSize = 4
 
 [node name="Neuron" type="Node" parent="Brain"]
 script = ExtResource("3_v0du8")
@@ -253,11 +208,5 @@ frame_progress = 0.237032
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_ar8lx")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
-
-[node name="GrenadeLauncher" type="AnimatedSprite2D" parent="."]
-texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_qqck8")
-animation = &"inactive"
-offset = Vector2(30, 0)
 
 [node name="Raycasts" type="Node" parent="."]

@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bq15f36y2e48o"]
+
+[ext_resource type="Script" path="res://Simulation/Grenade/Grenade.gd" id="1_gwxh8"]
+[ext_resource type="Texture2D" uid="uid://p5nug4i38i3v" path="res://Simulation/Grenade/Grenade.png" id="1_q8tsq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b66v3"]
+radius = 5.09902
+
+[node name="Grenade" type="RigidBody2D"]
+script = ExtResource("1_gwxh8")
+
+[node name="GrenadeSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_q8tsq")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b66v3")
+
+[node name="Explosion" type="GPUParticles2D" parent="."]
+amount = 100
+
+[node name="Fuse" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true

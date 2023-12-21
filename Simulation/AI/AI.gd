@@ -13,6 +13,9 @@ var facingRight : bool = true
 
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+func LaunchGrenade():
+	
+
 func _physics_process(delta):
 	var input : Array[float] = []
 	
@@ -29,6 +32,14 @@ func _physics_process(delta):
 			input.append(1)
 	
 	var output : Array[Neuron] = brain.Update(input)
+	
+	velocity.x = WalkSpeed * output.front().activation
+	
+	if output[1].activation > 0 and is_on_floor():
+		velocity.y += JumpPower
+	
+	if output[2].activation > 0:
+		
 	
 	if not is_on_floor():
 		velocity.y += gravity * delta
