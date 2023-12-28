@@ -14,21 +14,23 @@ class_name NeuralNetwork
 @export_group("Output")
 @export var OutputLayerSize : int = 3
 
-func vectorDotProduct(vector1, vector2):
-	var product : Array[float] = []
+func matrixVectorMultiply(matrix : Array[Array], vector : Array[float]):
+	var productVector : Array[float] = []
 	
-	if vector1.size() != vector2.size():
-		print("ERROR: Vectors must have the same length for dot product calculation.")
+	if matrix.size() == 0 or matrix.front().size() != vector.size():
+		print("Error: Incompatible matrix and vector dimensions for multiplication")
 		
-		print(vector1.size())
-		print(vector2.size())
+		return productVector
+	
+	for i in range(matrix.size()):
+		var rowSum : float = 0
 		
-		return []
+		for j in range(vector.size()):
+			rowSum += matrix[i][j] * vector[j]
+		
+		productVector.append(rowSum)
 	
-	for i in range(vector1.size()):
-		product += vector1[i] * vector2[i]
-	
-	return product
+	return productVector
 
 func vectorAdd(vector1, vector2):
 	var addend : Array[float] = []
@@ -40,26 +42,14 @@ func vectorAdd(vector1, vector2):
 
 var layers : Array[Array] = []
 
-func _ready():
-	var raycasts : Node = get_node("../Raycasts")
-	
-	for i in range(RaycastsAmount):
-		var raycast : RayCast2D = RayCast2D.new()
-		
-		raycast.set_target_position(Vector2(
-			sin((i / RaycastsAmount) * PI * 2) * RaycastsDistance,
-			cos((i / RaycastsAmount) * PI * 2) * RaycastsDistance))
-		
-		raycasts.add_child(raycast)
-
 func _init():
 	var inputLayer : Array[Neuron] = []
 	
-	for i in range(RaycastsAmount + 1):
+	for i in range(RaycastsAmount * 2 + 1): # `* 2` because of the distance and target type; `+ 1` because of the bias neuron
 		if i == RaycastsAmount + 1: # If bias neuron
 			inputLayer.append(Neuron.new(1, [], HiddenLayerSize))
 		else:
-			inputLayer.append(Neuron.new(randi_range(-1, 1), [], HiddenLayerSize))
+			inputLayer.append(Neuron.new(randf_range(-1, 1), [], HiddenLayerSize))
 	
 	layers.append(inputLayer)
 	
@@ -71,12 +61,12 @@ func _init():
 				if j == HiddenLayerSize + 1: # If bias neuron
 					hiddenLayer.append(Neuron.new(1, [], OutputLayerSize))
 				else:
-					hiddenLayer.append(Neuron.new(randi_range(-1, 1), [], OutputLayerSize))
+					hiddenLayer.append(Neuron.new(randf_range(-1, 1), [], OutputLayerSize))
 			else:
 				if j == HiddenLayerSize + 1: # If bias neuron
 					hiddenLayer.append(Neuron.new(1, [], HiddenLayerSize))
 				else:
-					hiddenLayer.append(Neuron.new(randi_range(-1, 1), [], HiddenLayerSize))
+					hiddenLayer.append(Neuron.new(randf_range(-1, 1), [], HiddenLayerSize))
 		
 		layers.append(hiddenLayer)
 	var outputLayer : Array[Neuron] = []
@@ -87,29 +77,37 @@ func _init():
 	layers.append(outputLayer)
 
 func Update(input : Array[float]):
-	var activations : Array[float] = []
-	var weights : Array[float] = []
-	var biases : Array[float] = []
-	
+	# Initialize input values
 	for i in range(RaycastsAmount):
-		layers.front()[i].activation = tanh(input[i]) # Normalize input
+		layers.front()[i].activation = tanh(input[i])
 	
-	biases.append(layers.front().back().activation) # Last neuron of input is the bias neuron
-	
+	# Feed forward / Propagate forward
 	for i in range(1, layers.size()): # For each layer (besides input layer)
 		var previousLayer : Array[Neuron] = layers[i - 1]
 		var currentLayer : Array[Neuron] = layers[i]
 		
-		for j in range(previousLayer.size() - 1): # For each neuron (besides bias neuron)
+		var weights : Array[Array] = [] # Matrix
+		var activations : Array[float] = [] # Vector
+		var biases : Array[float] = previousLayer.back().weights # Vector
+		
+		for j in range(currentLayer.size()): # For each weight in previousLayer connecting to currentLayer # No `- 1`, because it may be the output layer (Bias neuron check is on the next line)
+			if j != currentLayer.size() - 1 or i == layers.size(): # If not last neuron, unless output layer 
+				var columnOfWeights : Array[float] = []
+				
+				for k in range(previousLayer.size() - 1): # For each neuron in previousLayer # `- 1` because of bias neuron
+					columnOfWeights.append(previousLayer[k].weights[j])
+				
+				weights.append(columnOfWeights)
+		
+		for j in range(previousLayer.size() - 1): # For each neuron in previousLayer # `- 1` because of bias neuron
 			activations.append(previousLayer[j].activation)
-			
-			for k in range(currentLayer.size() - 1): # For each weight
-				weights.append(previousLayer[j].weights[k])
 		
-		### THE MATH PART ###
-		var layerActivations : Array[float] = vectorAdd(vectorDotProduct(weights, activations), biases)
+		# Equation: a¹=Wa⁰+b
+		var layerActivations : Array[float] = vectorAdd(matrixVectorMultiply(weights, activations), biases)
 		
+		# Activation function: σ(x) = tanh(x)
 		for j in range(layerActivations.size()):
 			layerActivations[j] = tanh(layerActivations[j])
+			currentLayer[j].activation = layerActivations[j]
 	
 	return layers.back() # Return output layer

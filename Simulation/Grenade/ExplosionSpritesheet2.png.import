@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5rqui1hnu8vn"
-path="res://.godot/imported/ExplosionSpritesheet.png-537f2d422cf7e8f53e87efe1d50b1926.ctex"
+uid="uid://dcq7tmxq1eul"
+path="res://.godot/imported/ExplosionSpritesheet2.png-e1f42664811559e418a6e3c8dee6ef19.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Simulation/Grenade/ExplosionSpritesheet.png"
-dest_files=["res://.godot/imported/ExplosionSpritesheet.png-537f2d422cf7e8f53e87efe1d50b1926.ctex"]
+source_file="res://Simulation/Grenade/ExplosionSpritesheet2.png"
+dest_files=["res://.godot/imported/ExplosionSpritesheet2.png-e1f42664811559e418a6e3c8dee6ef19.ctex"]
 
 [params]
 

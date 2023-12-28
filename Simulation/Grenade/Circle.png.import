@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5rqui1hnu8vn"
-path="res://.godot/imported/ExplosionSpritesheet.png-537f2d422cf7e8f53e87efe1d50b1926.ctex"
+uid="uid://cgm67tw76rmcx"
+path="res://.godot/imported/Circle.png-9fd5f4f9db8ae0786fb13298c219161a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Simulation/Grenade/ExplosionSpritesheet.png"
-dest_files=["res://.godot/imported/ExplosionSpritesheet.png-537f2d422cf7e8f53e87efe1d50b1926.ctex"]
+source_file="res://Simulation/Grenade/Circle.png"
+dest_files=["res://.godot/imported/Circle.png-9fd5f4f9db8ae0786fb13298c219161a.ctex"]
 
 [params]
 

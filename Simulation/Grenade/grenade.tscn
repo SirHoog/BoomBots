@@ -1,24 +1,145 @@
-[gd_scene load_steps=4 format=3 uid="uid://bq15f36y2e48o"]
+[gd_scene load_steps=19 format=3 uid="uid://bq15f36y2e48o"]
 
 [ext_resource type="Script" path="res://Simulation/Grenade/Grenade.gd" id="1_gwxh8"]
 [ext_resource type="Texture2D" uid="uid://p5nug4i38i3v" path="res://Simulation/Grenade/Grenade.png" id="1_q8tsq"]
+[ext_resource type="Texture2D" uid="uid://c5rqui1hnu8vn" path="res://Simulation/Grenade/ExplosionSpritesheet.png" id="3_2h3et"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vya1s"]
+radius = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b66v3"]
 radius = 5.09902
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_nqk71"]
+atlas = ExtResource("3_2h3et")
+region = Rect2(0, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvqk0"]
+atlas = ExtResource("3_2h3et")
+region = Rect2(500, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8oj3"]
+atlas = ExtResource("3_2h3et")
+region = Rect2(1000, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ix1p"]
+atlas = ExtResource("3_2h3et")
+region = Rect2(1500, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_on1u0"]
+atlas = ExtResource("3_2h3et")
+region = Rect2(2000, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ulqb6"]
+atlas = ExtResource("3_2h3et")
+region = Rect2(2500, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1fjir"]
+atlas = ExtResource("3_2h3et")
+region = Rect2(3000, 0, 500, 500)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fopuv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nqk71")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qvqk0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t8oj3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ix1p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_on1u0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ulqb6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1fjir")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_425eo"]
+offsets = PackedFloat32Array(0, 0.0516432, 0.0704225, 0.107981, 0.117371, 0.173709, 0.769953, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0, 0, 1, 1, 0.384314, 0, 0.662745, 1, 0.603922, 0, 0.419608, 1, 1, 0.0235294, 0.592157, 1, 0.994333, 0.66, 0.439216, 0.277528, 0.277528, 0.277528, 0.588235, 0.25098, 0.25098, 0.25098, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mf3rn"]
+gradient = SubResource("Gradient_425eo")
+
+[sub_resource type="Curve" id="Curve_i37ug"]
+_data = [Vector2(0.151639, 1), 0.0, -4.27751e-07, 0, 0, Vector2(0.553279, 0.315789), -0.694168, -0.694168, 0, 0, Vector2(1, 0.147368), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_panxg"]
+curve = SubResource("Curve_i37ug")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_043sm"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 180.0
+gravity = Vector3(0, 500, 0)
+initial_velocity_max = 1000.0
+angular_velocity_min = 200.0
+angular_velocity_max = 500.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+damping_max = 10000.0
+scale_min = 10.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_panxg")
+color_ramp = SubResource("GradientTexture1D_mf3rn")
+turbulence_enabled = true
+turbulence_noise_speed_random = 1.0
+turbulence_influence_min = 0.0
+turbulence_influence_max = 0.5
+
 [node name="Grenade" type="RigidBody2D"]
+lock_rotation = true
 script = ExtResource("1_gwxh8")
 
 [node name="GrenadeSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("1_q8tsq")
 
+[node name="ExplosionArea" type="Area2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="ExplosionArea"]
+shape = SubResource("CircleShape2D_vya1s")
+
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_b66v3")
 
-[node name="Explosion" type="GPUParticles2D" parent="."]
-amount = 100
+[node name="Explosion" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_fopuv")
+frame = 7
+frame_progress = 1.0
+
+[node name="ExplosionParticles" type="GPUParticles2D" parent="."]
+visible = false
+emitting = false
+amount = 1000
+process_material = SubResource("ParticleProcessMaterial_043sm")
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.95
+randomness = 0.5
+trail_lifetime = 0.05
+trail_section_subdivisions = 1
 
 [node name="Fuse" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[connection signal="timeout" from="Fuse" to="." method="_on_explode"]

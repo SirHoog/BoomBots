@@ -206,3 +206,5 @@ frame_progress = 0.237032
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_ar8lx")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="Raycasts" type="Node" parent="."]

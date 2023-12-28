@@ -10,4 +10,4 @@ func _ready():
 		
 		add_child(AI)
 		
-		AI.position = Vector2(randi_range(padding, 1024 - padding), randi_range(padding, 576 - padding))
+		AI.position = Vector2i(randi_range(padding, 1024 - padding), randi_range(padding, 576 - padding))
