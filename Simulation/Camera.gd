@@ -13,9 +13,9 @@ func _input(event):
 		mouseStartPos = event.position
 		screenStartPos = position
 	elif event is InputEventMouseMotion and dragging:
-		position = zoom * (mouseStartPos - event.position) + screenStartPos
+		position = (mouseStartPos - event.position) / zoom + screenStartPos
 	else:
 		dragging = false
 	
 	# Zooming
-	zoom += Vector2(Input.get_axis("ZoomOut", "ZoomIn") * 0.5, Input.get_axis("ZoomOut", "ZoomIn") * 0.5)
+	zoom *= 2 ** Input.get_axis("ZoomOut", "ZoomIn") # 2 ^ x # Zoom in twice or half as much as before

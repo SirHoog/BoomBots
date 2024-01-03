@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqki5u07c5uei"]
+
+[ext_resource type="Script" path="res://Simulation/UI/FPS.gd" id="1_f02qa"]
+[ext_resource type="Script" path="res://Simulation/UI/GameSpeed.gd" id="2_rr838"]
+[ext_resource type="Script" path="res://Simulation/UI/AIsLeft.gd" id="3_jkb1e"]
+
+[node name="UI_CanvasLayer" type="CanvasLayer"]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DebugInfo" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 122.0
+offset_bottom = 106.0
+
+[node name="FPS" type="Label" parent="UI/DebugInfo"]
+layout_mode = 2
+text = "FPS:"
+script = ExtResource("1_f02qa")
+
+[node name="GameSpeed" type="Label" parent="UI/DebugInfo"]
+layout_mode = 2
+text = "Game Speed:"
+script = ExtResource("2_rr838")
+
+[node name="AIsLeft" type="Label" parent="UI/DebugInfo"]
+layout_mode = 2
+text = "AIs Left:"
+script = ExtResource("3_jkb1e")

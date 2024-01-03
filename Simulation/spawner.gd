@@ -3,7 +3,7 @@ extends Node
 @export var PopulationSize : int = 5
 
 func _ready():
-	for i in range(PopulationSize):
+	for i in range(PopulationSize - 1): # Because of the original one
 		var AI_PackedScene : Resource = preload("res://Simulation/AI/AI.tscn")
 		var AI : Node = AI_PackedScene.instantiate()
 		var padding : int = 32 # Amount of pixels inside the map that it can't spawn in

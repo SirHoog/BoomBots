@@ -1,11 +1,10 @@
-extends Node
-class_name NeuralNetwork
+class_name NeuralNetwork extends "AI.gd"
 
 @export_category("Neural Network Layers")
 
 @export_group("Input")
 @export var RaycastsAmount : int = 16
-@export var RaycastsDistance : float = 250
+@export var RaycastsDistance : float = 350
 
 @export_group("Hidden")
 @export var HiddenLayersAmount : int = 2
@@ -32,7 +31,7 @@ func matrixVectorMultiply(matrix : Array[Array], vector : Array[float]):
 	
 	return productVector
 
-func vectorAdd(vector1, vector2):
+func vectorAdd(vector1 : Array[float], vector2 : Array[float]):
 	var addend : Array[float] = []
 	
 	for i in range(vector1.size()):
@@ -90,19 +89,19 @@ func Update(input : Array[float]):
 		var activations : Array[float] = [] # Vector
 		var biases : Array[float] = previousLayer.back().weights # Vector
 		
-		for j in range(currentLayer.size()): # For each weight in previousLayer connecting to currentLayer # No `- 1`, because it may be the output layer (Bias neuron check is on the next line)
-			if j != currentLayer.size() - 1 or i == layers.size(): # If not last neuron, unless output layer 
-				var columnOfWeights : Array[float] = []
-				
-				for k in range(previousLayer.size() - 1): # For each neuron in previousLayer # `- 1` because of bias neuron
-					columnOfWeights.append(previousLayer[k].weights[j])
-				
-				weights.append(columnOfWeights)
+		for j in range(currentLayer.size() - 1): # For each weight in previousLayer connecting to currentLayer # `- 1` because of bias neuron
+			var columnOfWeights : Array[float] = []
+			
+			for k in range(previousLayer.size() - 1): # For each neuron in previousLayer # `- 1` because of bias neuron
+				columnOfWeights.append(previousLayer[k].weights[j])
+			
+			weights.append(columnOfWeights)
 		
 		for j in range(previousLayer.size() - 1): # For each neuron in previousLayer # `- 1` because of bias neuron
 			activations.append(previousLayer[j].activation)
 		
 		# Equation: a¹=Wa⁰+b
+		
 		var layerActivations : Array[float] = vectorAdd(matrixVectorMultiply(weights, activations), biases)
 		
 		# Activation function: σ(x) = tanh(x)

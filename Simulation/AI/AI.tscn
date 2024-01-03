@@ -1,11 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://bdy1t5u5fm8os"]
+[gd_scene load_steps=28 format=3 uid="uid://bdy1t5u5fm8os"]
 
 [ext_resource type="Script" path="res://Simulation/AI/AI.gd" id="1_7v50k"]
 [ext_resource type="Texture2D" uid="uid://b6bqckkvkr4de" path="res://Simulation/AI/Idle/Left.png" id="1_rvov7"]
-[ext_resource type="Script" path="res://Simulation/AI/Brain.gd" id="2_k8e6g"]
 [ext_resource type="Texture2D" uid="uid://bhlip3x2h3ggv" path="res://Simulation/AI/Idle/Right.png" id="2_lp5m0"]
 [ext_resource type="Texture2D" uid="uid://dlq3yawrmixwq" path="res://Simulation/AI/Move/Left.png" id="3_k0d71"]
-[ext_resource type="Script" path="res://Simulation/AI/Neuron.gd" id="3_v0du8"]
 [ext_resource type="Texture2D" uid="uid://0tehvmisv5c6" path="res://Simulation/AI/Move/Right.png" id="4_3rbon"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kqx3m"]
@@ -171,12 +169,10 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ar8lx"]
-custom_solver_bias = 0.5
-radius = 9.0
-height = 40.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_atpbm"]
+size = Vector2(18, 39)
 
-[node name="AI" type="CharacterBody2D"]
+[node name="AI" type="CharacterBody2D" groups=["Population"]]
 editor_description = "Input:
 Raycasts distance,
 Raycasts target type
@@ -188,13 +184,6 @@ Direction,
 Force"
 script = ExtResource("1_7v50k")
 
-[node name="Brain" type="Node" parent="."]
-script = ExtResource("2_k8e6g")
-OutputLayerSize = 4
-
-[node name="Neuron" type="Node" parent="Brain"]
-script = ExtResource("3_v0du8")
-
 [node name="AI_Sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_5ks31")
@@ -204,5 +193,12 @@ frame = 4
 frame_progress = 0.237032
 
 [node name="Collision" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_ar8lx")
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_atpbm")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="BrainUpdateTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[connection signal="timeout" from="BrainUpdateTimer" to="." method="_on_brain_update"]
